@@ -1,0 +1,9 @@
+config {
+  type: "table" // Creates a view in BigQuery. Try changing to "table" instead.
+}
+
+SELECT 
+    fruit,
+    sum(count)
+FROM ${ref("demo_view")}
+GROUP BY 1

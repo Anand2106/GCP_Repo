@@ -1,0 +1,17 @@
+config {
+  type: "view" // Creates a view in BigQuery. Try changing to "table" instead.
+}
+
+-- The rest of a SQLX file contains your SELECT statement used to create the table.
+
+SELECT 
+    "Apple" as fruit,
+    3 as count
+UNION all
+SELECT 
+    "Grape" as fruit,
+    2 as count
+UNION all
+SELECT 
+    "banana" as fruit,
+    5 as count
