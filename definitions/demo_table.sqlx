@@ -4,6 +4,6 @@ config {
 
 SELECT 
     fruit,
-    sum(count)
+    sum(count) as counts
 FROM ${ref("demo_view")}
 GROUP BY 1
