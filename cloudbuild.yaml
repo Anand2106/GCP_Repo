@@ -5,15 +5,16 @@ steps:
   - '-c'
   - |
     # Define variables
-    REPO_URL="https://source.developers.google.com/p/your-project/r/your-repo"
-    BRANCH_NAME="master"
+    GITHUB_REPO="https://github.com/Anand2106/GCP_Repo.git"
+    BRANCH_NAME="gcp_deployement"
     COMMIT_MESSAGE="Update queries from BigQuery"
+    ACCESS_TOKEN="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"
 
     # Authenticate with the service account
     gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
     # Set project
-    gcloud config set project your-project
+    gcloud config set project ringed-hallway-427106-i4
 
     # Retrieve query job history
     bq ls --jobs --filter="state=SUCCESS" --format=prettyjson > jobs.json
@@ -21,18 +22,18 @@ steps:
     # Extract SQL queries from the job history
     jq -r '.[] | select(.configuration.query != null) | .configuration.query.query' jobs.json > queries.sql
 
-    # Clone the repository
-    git config --global user.email "your-email@example.com"
-    git config --global user.name "your-username"
-    git clone ${REPO_URL}
-    cd your-repo
+    # Clone the GitHub repository
+    git config --global user.email "anandpandian7397@gmail.com"
+    git config --global user.name "Anand2106"
+    git clone https://$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@$gcp_deployement
+    cd gcp_deployement
 
     # Move the queries file to the repository
     mv ../queries.sql .
 
     # Commit and push the changes
     git add queries.sql
-    git commit -m "${COMMIT_MESSAGE}"
-    git push origin ${BRANCH_NAME}
+    git commit -m "${Push the queries}"
+    git push origin ${query}
 
-timeout: 900s
+timeout: 600s
