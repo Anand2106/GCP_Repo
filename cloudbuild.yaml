@@ -41,8 +41,9 @@ timeout: 900s
 options:
   logging: CLOUD_LOGGING_ONLY
 
-# Use volumes to provide the service account key
-availableSecrets:
-  secretManager:
-    - versionName: "projects/ringed-hallway-427106/secrets/my-service-account-key/versions/latest"
-      mountPath: "/workspace/service-account-key.json"
+secretEnv:
+  SERVICE_ACCOUNT_KEY: projects/ringed-hallway-427106/secrets/my-service-account-key/versions/latest
+
+volumes:
+- name: 'secret-volume'
+  path: '/workspace'
