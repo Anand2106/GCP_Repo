@@ -1,0 +1,38 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    # Define variables
+    REPO_URL="https://source.developers.google.com/p/your-project/r/your-repo"
+    BRANCH_NAME="master"
+    COMMIT_MESSAGE="Update queries from BigQuery"
+
+    # Authenticate with the service account
+    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+
+    # Set project
+    gcloud config set project your-project
+
+    # Retrieve query job history
+    bq ls --jobs --filter="state=SUCCESS" --format=prettyjson > jobs.json
+
+    # Extract SQL queries from the job history
+    jq -r '.[] | select(.configuration.query != null) | .configuration.query.query' jobs.json > queries.sql
+
+    # Clone the repository
+    git config --global user.email "your-email@example.com"
+    git config --global user.name "your-username"
+    git clone ${REPO_URL}
+    cd your-repo
+
+    # Move the queries file to the repository
+    mv ../queries.sql .
+
+    # Commit and push the changes
+    git add queries.sql
+    git commit -m "${COMMIT_MESSAGE}"
+    git push origin ${BRANCH_NAME}
+
+timeout: 900s
