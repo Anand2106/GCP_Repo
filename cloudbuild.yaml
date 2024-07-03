@@ -56,7 +56,7 @@ steps:
     echo "Cloning the GitHub repository..."
     git config --global user.email "anandpandian7397@gmail.com"
     git config --global user.name "Anand2106"
-    if git clone https://${ACCESS_TOKEN}@github.com/Anand2106/GCP_Repo.git; then
+    if git clone https://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@github.com/Anand2106/GCP_Repo.git; then
       echo "GitHub repository cloned successfully"
       cd GCP_Repo
     else
@@ -73,7 +73,7 @@ steps:
     fi
 
     echo "Committing and pushing the changes..."
-    if git add queries.sql && git commit -m "${COMMIT_MESSAGE}" && git push origin ${BRANCH_NAME}; then
+    if git add queries.sql && git commit -m "Update queries from BigQuery" && git push origin gcp_deployement; then
       echo "Changes committed and pushed successfully"
     else
       echo "Failed to commit and push the changes"
