@@ -11,7 +11,7 @@ steps:
     ACCESS_TOKEN="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"
 
     # Authenticate with the service account
-    gcloud auth activate-service-account --key-file=${_SERVICE_ACCOUNT_KEY}
+    gcloud auth activate-service-account --key-file=/workspace/service-account-key.json
 
     # Set project
     gcloud config set project ringed-hallway-427106-i4
@@ -41,5 +41,8 @@ timeout: 900s
 options:
   logging: CLOUD_LOGGING_ONLY
 
-substitutions:
-  _SERVICE_ACCOUNT_KEY: "path/to/your/service-account-key.json"
+# Use volumes to provide the service account key
+availableSecrets:
+  secretManager:
+    - versionName: "projects/ringed-hallway-427106/secrets/my-service-account-key/versions/latest"
+      mountPath: "/workspace/service-account-key.json"
