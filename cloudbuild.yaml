@@ -10,8 +10,11 @@ steps:
     COMMIT_MESSAGE="Update queries from BigQuery"
     ACCESS_TOKEN="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"
 
+    # Write service account key to a file
+    echo "${SERVICE_ACCOUNT_KEY}" > /service-account-key.json
+
     # Authenticate with the service account
-    gcloud auth activate-service-account --key-file=/workspace/service-account-key.json
+    gcloud auth activate-service-account --key-file=/service-account-key.json
 
     # Set project
     gcloud config set project ringed-hallway-427106-i4
@@ -43,7 +46,3 @@ options:
 
 secretEnv:
   SERVICE_ACCOUNT_KEY: projects/ringed-hallway-427106/secrets/my-service-account-key/versions/latest
-
-volumes:
-- name: 'secret-volume'
-  path: '/workspace'
