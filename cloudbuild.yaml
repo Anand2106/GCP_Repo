@@ -4,7 +4,8 @@ steps:
   args:
   - '-c'
   - |
-    set -e
+    set -ex
+
     # Define variables
     GITHUB_REPO="https://github.com/Anand2106/GCP_Repo.git"
     BRANCH_NAME="gcp_deployement"
@@ -13,9 +14,7 @@ steps:
 
     echo "Fetching the service account key from Secret Manager..."
     gcloud secrets versions access latest --secret=my-service-account-key > /service-account-key.json
-
-    echo "Authenticating with the service account..."
-    gcloud auth activate-service-account --key-file=/service-account-key.json
+    cat /service-account-key.json
 
     echo "Setting the project..."
     gcloud config set project ringed-hallway-427106-i4
