@@ -36,8 +36,8 @@ steps:
 
     # Commit and push the changes
     git add queries.sql
-    git commit -m "${COMMIT_MESSAGE}"
-    git push origin ${BRANCH_NAME}
+    git commit -m "Update queries from BigQuery"
+    git push origin query
 
 timeout: 900s
 
