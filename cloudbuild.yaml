@@ -13,31 +13,72 @@ steps:
     ACCESS_TOKEN="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"
 
     echo "Fetching the service account key from Secret Manager..."
-    gcloud secrets versions access latest --secret=my-service-account-key > /service-account-key.json
-    cat /service-account-key.json
+    if gcloud secrets versions access latest --secret=my-service-account-key > /service-account-key.json; then
+      echo "Service account key fetched successfully"
+      cat /service-account-key.json
+    else
+      echo "Failed to fetch the service account key"
+      exit 1
+    fi
+
+    echo "Authenticating with the service account..."
+    if gcloud auth activate-service-account --key-file=/service-account-key.json; then
+      echo "Authenticated successfully"
+    else
+      echo "Failed to authenticate"
+      exit 1
+    fi
 
     echo "Setting the project..."
-    gcloud config set project ringed-hallway-427106-i4
+    if gcloud config set project ringed-hallway-427106-i4; then
+      echo "Project set successfully"
+    else
+      echo "Failed to set the project"
+      exit 1
+    fi
 
     echo "Retrieving query job history..."
-    bq ls --jobs --filter="state=SUCCESS" --format=prettyjson > jobs.json
+    if bq ls --jobs --filter="state=SUCCESS" --format=prettyjson > jobs.json; then
+      echo "Query job history retrieved successfully"
+    else
+      echo "Failed to retrieve query job history"
+      exit 1
+    fi
 
     echo "Extracting SQL queries from the job history..."
-    jq -r '.[] | select(.configuration.query != null) | .configuration.query.query' jobs.json > queries.sql
+    if jq -r '.[] | select(.configuration.query != null) | .configuration.query.query' jobs.json > queries.sql; then
+      echo "SQL queries extracted successfully"
+    else
+      echo "Failed to extract SQL queries"
+      exit 1
+    fi
 
     echo "Cloning the GitHub repository..."
     git config --global user.email "anandpandian7397@gmail.com"
     git config --global user.name "Anand2106"
-    git clone https://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@github.com/Anand2106/GCP_Repo.git
-    cd GCP_Repo
+    if git clone https://${ACCESS_TOKEN}@github.com/Anand2106/GCP_Repo.git; then
+      echo "GitHub repository cloned successfully"
+      cd GCP_Repo
+    else
+      echo "Failed to clone the GitHub repository"
+      exit 1
+    fi
 
-    # Move the queries file to the repository
-    mv ../queries.sql .
+    echo "Moving the queries file to the repository..."
+    if mv ../queries.sql .; then
+      echo "Queries file moved successfully"
+    else
+      echo "Failed to move the queries file"
+      exit 1
+    fi
 
-    # Commit and push the changes
-    git add queries.sql
-    git commit -m "Update queries from BigQuery"
-    git push origin query
+    echo "Committing and pushing the changes..."
+    if git add queries.sql && git commit -m "${COMMIT_MESSAGE}" && git push origin ${BRANCH_NAME}; then
+      echo "Changes committed and pushed successfully"
+    else
+      echo "Failed to commit and push the changes"
+      exit 1
+    fi
 
 timeout: 900s
 
