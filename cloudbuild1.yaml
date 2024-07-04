@@ -16,9 +16,9 @@ steps:
       - '-c'
       - |
         echo "Copying instance configuration..."
-        cp ${_INSTANCE_CONFIG} /workspace/instance-config.json
+        echo ${_INSTANCE_CONFIG} > /workspace/instance-config.json
     env:
-      - 'INSTANCE_CONFIG=$(gcloud compute instances describe INSTANCE_NAME --project=SOURCE_PROJECT_ID --zone=ZONE --format=json)'
+      - 'INSTANCE_CONFIG=$(gcloud compute instances describe instance-20240701-112443 --project=ringed-hallway-427106-i4 --zone=us-central1-b --format=json)'
     id: 'copy-instance-config'
     dir: './'
 
@@ -45,6 +45,7 @@ steps:
     dir: './'
 
 options:
+  logging: 'CLOUD_LOGGING_ONLY'
   substitution_option: 'ALLOW_LOOSE'
 substitutions:
   _INSTANCE_CONFIG: ''
