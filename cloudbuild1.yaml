@@ -7,20 +7,10 @@ steps:
       - 'instance-20240701-112443'
       - '--project=ringed-hallway-427106-i4'
       - '--zone=us-central1-b'
+      - '--format=json'
     id: 'describe-instance'
     dir: './'
-
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Copying instance configuration..."
-        echo ${_INSTANCE_CONFIG} > /workspace/instance-config.json
-    env:
-      - 'INSTANCE_CONFIG=$(gcloud compute instances describe instance-20240701-112443 --project=ringed-hallway-427106-i4 --zone=us-central1-b --format=json)'
-    id: 'copy-instance-config'
-    dir: './'
+    output: '/workspace/instance-config.json'
 
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
@@ -28,7 +18,7 @@ steps:
       - '-c'
       - |
         echo "Modifying instance configuration for destination project..."
-        sed -i 's/ringed-hallway-427106-i4/ap-project-2-428205/g' /workspace/instance-config.json
+        sed -i 's/"ringed-hallway-427106-i4"/"ap-project-2-428205"/g' /workspace/instance-config.json
     id: 'modify-instance-config'
     dir: './'
 
@@ -47,5 +37,3 @@ steps:
 options:
   logging: 'CLOUD_LOGGING_ONLY'
   substitution_option: 'ALLOW_LOOSE'
-substitutions:
-  _INSTANCE_CONFIG: ''
