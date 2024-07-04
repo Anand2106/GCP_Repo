@@ -16,17 +16,13 @@ steps:
       - |
         echo "Modifying instance configuration for destination project..."
         sed -i 's/"ringed-hallway-427106-i4"/"ap-project-2-428205"/g' /workspace/instance-config.json
-    id: 'modify-instance-config'
-    dir: './'
-
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
+        instance_name=$(jq -r '.name' /workspace/instance-config.json)
+        machine_type=$(jq -r '.machineType' /workspace/instance-config.json)
+        source_image=$(jq -r '.disks[0].initializeParams.sourceImage' /workspace/instance-config.json)
+        zone=$(jq -r '.zone' /workspace/instance-config.json | awk -F/ '{print $NF}')
         echo "Creating new instance..."
-        gcloud compute instances create testing-instance --project=ap-project-2-428205 --zone=us-central1-b --source-instance-template=/workspace/instance-config.json
-    id: 'create-new-instance'
+        gcloud compute instances create ${instance_name}-copy --project=ap-project-2-428205 --zone=${zone} --machine-type=${machine_type} --source-image=${source_image}
+    id: 'modify-and-create-instance'
     dir: './'
 
 options:
