@@ -6,7 +6,6 @@ steps:
       - |
         echo "Describing instance..."
         gcloud compute instances describe instance-20240701-112443 --project=ringed-hallway-427106-i4 --zone=us-central1-b --format=json > /workspace/instance-config.json
-        gcloud compute instance-templates create-from-instance temp-instance-template --source-instance=instance-20240701-112443 --source-instance-zone=us-central1-b --project=ringed-hallway-427106-i4
     id: 'describe-instance'
     dir: './'
 
@@ -15,8 +14,18 @@ steps:
     args:
       - '-c'
       - |
+        echo "Modifying instance configuration for destination project..."
+        sed -i 's/"ringed-hallway-427106-i4"/"ap-project-2-428205"/g' /workspace/instance-config.json
+    id: 'modify-instance-config'
+    dir: './'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
         echo "Creating new instance..."
-        gcloud compute instances create testing-instance --project=ap-project-2-428205 --zone=us-central1-b --source-instance-template=temp-instance-template
+        gcloud compute instances create testing-instance --project=ap-project-2-428205 --zone=us-central1-b --source-instance-template=/workspace/instance-config.json
     id: 'create-new-instance'
     dir: './'
 
