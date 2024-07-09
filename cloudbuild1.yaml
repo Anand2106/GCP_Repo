@@ -12,11 +12,13 @@ steps:
 
         gcloud config set project ${_DESTINATION_PROJECT_ID}
         gcloud auth activate-service-account --key-file=/workspace/destination-service-account-key.json
-        gcloud compute instances create testing-instance --project ${_DESTINATION_PROJECT_ID} --source-instance-config /workspace/instance_config.json
+        gcloud compute instances create ${_INSTANCE_NAME} --project ${_DESTINATION_PROJECT_ID} --source-instance-config /workspace/instance_config.json
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
 substitutions:
-  _SOURCE_PROJECT_ID: 'ringed-hallway-427106-i4'
-  _DESTINATION_PROJECT_ID: 'ap-project-2-428205'
-  _INSTANCE_NAME: 'instance-20240701-112443'
-
-# Add appropriate triggers and other configurations as needed
+  _SOURCE_PROJECT_ID: 'source-project-id'
+  _DESTINATION_PROJECT_ID: 'destination-project-id'
+  _INSTANCE_NAME: 'instance-name'
