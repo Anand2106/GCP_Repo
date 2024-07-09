@@ -1,34 +1,22 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        echo "Describing instance..."
-        gcloud compute instances describe instance-20240701-112443 --project=ringed-hallway-427106-i4 --zone=us-central1-b --format=json > /workspace/instance-config.json
-    id: 'describe-instance'
-    dir: './'
+        gcloud config set project ${_SOURCE_PROJECT_ID}
+        gcloud auth activate-service-account --key-file=/workspace/source-service-account-key.json
+        gcloud compute instances describe ${_INSTANCE_NAME} --project ${_SOURCE_PROJECT_ID} --format=json > /workspace/instance_config.json
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Modifying instance configuration for destination project..."
-        sed -i 's/"ringed-hallway-427106-i4"/"ap-project-2-428205"/g' /workspace/instance-config.json
-    id: 'modify-instance-config'
-    dir: './'
+        sed -i 's/"project": "'${_SOURCE_PROJECT_ID}'"/"project": "'${_DESTINATION_PROJECT_ID}'"/g' /workspace/instance_config.json
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Creating new instance..."
-        gcloud compute instances create testing-instance --project=ap-project-2-428205 --zone=us-central1-b --source-instance-template=/workspace/instance-config.json
-    id: 'create-new-instance'
-    dir: './'
+        gcloud config set project ${_DESTINATION_PROJECT_ID}
+        gcloud auth activate-service-account --key-file=/workspace/destination-service-account-key.json
+        gcloud compute instances create testing-instance --project ${_DESTINATION_PROJECT_ID} --source-instance-config /workspace/instance_config.json
 
-options:
-  logging: 'CLOUD_LOGGING_ONLY'
-  substitution_option: 'ALLOW_LOOSE'
+substitutions:
+  _SOURCE_PROJECT_ID: 'ringed-hallway-427106-i4'
+  _DESTINATION_PROJECT_ID: 'ap-project-2-428205'
+  _INSTANCE_NAME: 'instance-20240701-112443'
+
+# Add appropriate triggers and other configurations as needed
