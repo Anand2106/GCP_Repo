@@ -1,0 +1,28 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if gcloud compute instances describe ${_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then                   
+          echo "Instance ${_INSTANCE_NAME} already exists."
+        else                                          
+          echo "Instance ${_INSTANCE_NAME} does not exist. Deployment is processing......."
+          #Creating new compute instance.
+          gcloud compute instances create ${_INSTANCE_NAME} \
+          --project=${_DESTINATION_PROJECT_ID} \
+          --zone=${_ZONE_NAME} \
+          --machine-type=e2-medium \
+          --service-account=1049980861600-compute@developer.gserviceaccount.com \
+          --create-disk=auto-delete=yes,boot=yes,device-name=${_INSTANCE_NAME}-disk,
+            image=projects/${_SOURCE_PROJECT_ID}/global/images/image-deployment,mode=rw,size=50,type=projects/${_DESTINATION_PROJECT_ID}/zones/${_ZONE_NAME}/diskTypes/pd-balanced
+        fi
+options:
+  logging: CLOUD_LOGGING_ONLY
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
+substitutions:
+  _SOURCE_PROJECT_ID: 'ringed-hallway-427106-i4'
+  _DESTINATION_PROJECT_ID: 'ap-project-2-428205'
+  _INSTANCE_NAME: 'deployment-instance'
+  _ZONE_NAME: 'us-central1-a'
