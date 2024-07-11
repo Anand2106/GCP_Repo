@@ -1,7 +1,7 @@
 steps:
  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
+   entrypoint: 'bash'
+   args:
       - '-c'
       - |
       if gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then
