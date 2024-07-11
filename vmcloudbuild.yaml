@@ -14,8 +14,7 @@ steps:
           --zone=${_ZONE_NAME} \
           --machine-type=e2-medium \
           --service-account=1049980861600-compute@developer.gserviceaccount.com \
-          --create-disk=auto-delete=yes,boot=yes,device-name=${_INSTANCE_NAME}-disk,
-            image=projects/${_SOURCE_PROJECT_ID}/global/images/image-deployment,mode=rw,size=50,type=projects/${_DESTINATION_PROJECT_ID}/zones/${_ZONE_NAME}/diskTypes/pd-balanced
+          --create-disk=auto-delete=yes,boot=yes,device-name=${_INSTANCE_NAME}-disk,image=projects/${_SOURCE_PROJECT_ID}/global/images/image-deployment,mode=rw,size=50,type=projects/${_DESTINATION_PROJECT_ID}/zones/${_ZONE_NAME}/diskTypes/pd-balanced
         fi
 options:
   logging: CLOUD_LOGGING_ONLY
