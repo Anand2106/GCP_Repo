@@ -22,8 +22,8 @@ steps:
         #   else
         #     echo "Instance ${_SOURCE_INSTANCE_NAME} status: $STATUS"
         #   fi
-        # else
-        #   echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
+        else
+          echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
        fi
     id: 'Check-sourceinstance-status'
     dir: './'
