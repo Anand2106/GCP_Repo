@@ -25,7 +25,7 @@ steps:
         else
           echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
        fi
-    id: 'check-sourceinstance'
+    id: 'check-instance'
     dir: './'
     
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
