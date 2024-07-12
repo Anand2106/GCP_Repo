@@ -6,7 +6,7 @@ steps:
       - |
         if gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then
           echo "Source instance ${_SOURCE_INSTANCE_NAME} exists. Checking the running status..."
-          STATUS=$(gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} --format="value(status)")
+          # STATUS=$(gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} --format="value(status)")
 
         #   # Check the status of the instance
         #   if [ "$STATUS" == "RUNNING" ]; then
