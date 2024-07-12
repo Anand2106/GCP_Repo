@@ -1,32 +1,32 @@
 steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then
-          echo "Source instance ${_SOURCE_INSTANCE_NAME} exists. Checking the running status..."
-          # STATUS=$(gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} --format="value(status)")
+  # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: 'bash'
+  #   args:
+  #     - '-c'
+  #     - |
+  #       if gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then
+  #         echo "Source instance ${_SOURCE_INSTANCE_NAME} exists. Checking the running status..."
+  #         # STATUS=$(gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} --format="value(status)")
 
-        #   # Check the status of the instance
-        #   if [ "$STATUS" == "RUNNING" ]; then
-        #     echo "Instance ${_SOURCE_INSTANCE_NAME} status is running. So stopping the instance....."
-        #     gcloud compute instances stop ${_SOURCE_INSTANCE_NAME} \
-        #       --project=${_SOURCE_PROJECT_ID} \
-        #       --zone=${_ZONE_NAME}
-        #     echo "Instance ${_SOURCE_INSTANCE_NAME} is Stopped successfully"
+  #       #   # Check the status of the instance
+  #       #   if [ "$STATUS" == "RUNNING" ]; then
+  #       #     echo "Instance ${_SOURCE_INSTANCE_NAME} status is running. So stopping the instance....."
+  #       #     gcloud compute instances stop ${_SOURCE_INSTANCE_NAME} \
+  #       #       --project=${_SOURCE_PROJECT_ID} \
+  #       #       --zone=${_ZONE_NAME}
+  #       #     echo "Instance ${_SOURCE_INSTANCE_NAME} is Stopped successfully"
                     
-        #   elif [ "$STATUS" == "STOPPED" ]; then
-        #     echo "Instance ${_SOURCE_INSTANCE_NAME} status is already stopped."
+  #       #   elif [ "$STATUS" == "STOPPED" ]; then
+  #       #     echo "Instance ${_SOURCE_INSTANCE_NAME} status is already stopped."
             
-        #   else
-        #     echo "Instance ${_SOURCE_INSTANCE_NAME} status: $STATUS"
-        #   fi
-        else
-          echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
-       fi
-    id: 'Check-sourceinstance-status'
-    dir: './'
+  #       #   else
+  #       #     echo "Instance ${_SOURCE_INSTANCE_NAME} status: $STATUS"
+  #       #   fi
+  #       else
+  #         echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
+  #      fi
+  #   id: 'Check-sourceinstance-status'
+  #   dir: './'
     
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
