@@ -8,10 +8,9 @@ steps:
           echo "Source instance ${_SOURCE_INSTANCE_NAME} exists. Checking the running status..."
         else
           echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
-       fi
+        fi
     id: 'check-instance'
-    dir: './'
-    
+    dir: './'    
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
