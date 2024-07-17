@@ -46,4 +46,3 @@ substitutions:
   _SOURCE_INSTANCE_NAME: 'deployment-instance-dev'
   _TARGET_INSTANCE_NAME: 'deployment-instance-test'
   _ZONE_NAME: 'us-central1-a'
-  STATUS
