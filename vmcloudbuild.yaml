@@ -7,7 +7,7 @@ steps:
         if gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} &> /dev/null; then
           echo "Source instance ${_SOURCE_INSTANCE_NAME} exists. then stopping the instance....."
           STATUS=$(gcloud compute instances describe ${_SOURCE_INSTANCE_NAME} --zone=${_ZONE_NAME} --format="value(status)")
-          echo "$STATUS"
+          echo $STATUS
         else
           echo "The source instance ${_SOURCE_INSTANCE_NAME} does not exist."
         fi
